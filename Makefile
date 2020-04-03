@@ -24,10 +24,6 @@ all: $(TARGET).nds
 #---------------------------------------------------------------------------------
 $(TARGET).nds	:	arm7/$(TARGET).elf arm9/$(TARGET).elf
 	ndstool	-c $(TARGET).nds -7 arm7/$(TARGET).elf -9 arm9/$(TARGET).elf $(ICON)
-	#cp $(TARGET).nds $(TARGET)_fs.nds
-	#dlditool r4tf $(TARGET)_fs.nds
-	cp $(TARGET).nds STELLADS/debug$(TARGET).nds
-	rm "STELLADS/debug$(TARGET)_nogba.nds"
   
 #---------------------------------------------------------------------------------
 arm7/$(TARGET).elf:
