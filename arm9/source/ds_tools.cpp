@@ -39,6 +39,7 @@ uInt8* filebuffer = 0;
 
 int bg0, bg0b,bg1b;
 unsigned int etatEmu;
+bool fpsDisplay = false;
   
 #define SOUND_SIZE (2048)
 static uInt8 sound_buffer[SOUND_SIZE];
@@ -668,6 +669,7 @@ ITCM_CODE void dsMainLoop(void) {
         PreviousTimeInMs=CurrentTimeInMs;
 				
         // Wait for keys
+		scanKeys();
         keys_pressed = keysCurrent();
        	theConsole->eventHandler().sendKeyEvent(StellaEvent::KCODE_SPACE, keys_pressed & (KEY_A));
         theConsole->eventHandler().sendKeyEvent(StellaEvent::KCODE_UP,    keys_pressed & (KEY_UP));
@@ -679,7 +681,10 @@ ITCM_CODE void dsMainLoop(void) {
         theConsole->eventHandler().sendKeyEvent(StellaEvent::KCODE_F3, 0);
         theConsole->eventHandler().sendKeyEvent(StellaEvent::KCODE_F4, 0);
 
-        if (keys_pressed & (KEY_L)) { siprintf(fpsbuf,"%03d",emuFps); dsPrintValue(0,0,0, fpsbuf); }
+        if (fpsDisplay) { siprintf(fpsbuf,"%03d",(int)emuFps); dsPrintValue(0,0,0, fpsbuf); }
+		else { siprintf(fpsbuf,"   "); dsPrintValue(0,0,0, fpsbuf); }
+
+        if (keysDown() & KEY_START) { fpsDisplay = !fpsDisplay; }
         if (keys_pressed & KEY_TOUCH) {
           if (!keys_touch) {
             touchPosition touch;
