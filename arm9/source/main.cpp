@@ -27,8 +27,14 @@ int main(int argc, char **argv) {
   // Intro and main screen
   intro_logo();
   dsInitScreenMain();
-  etatEmu = STELLADS_MENUINIT;
-  
+  if (argc > 1) {
+    dsShowScreenMain();
+    etatEmu = STELLADS_PLAYINIT;
+    dsLoadGame(argv[1]);
+  } else {
+    etatEmu = STELLADS_MENUINIT;
+  }
+
   // Main loop of emulation
   dsMainLoop();
   	
